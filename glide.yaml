@@ -1,0 +1,9 @@
+package: github.com/Emyrk/factom-identity
+import:
+- package: github.com/Emyrk/factom-raw
+- package: github.com/FactomProject/factomd
+  version: communitynet-m3-id
+  subpackages:
+  - common/identity
+  - common/interfaces
+  - common/primitives

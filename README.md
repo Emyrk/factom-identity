@@ -1,0 +1,1 @@
+# Tool to parse identities from the blockchain
