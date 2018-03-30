@@ -3,6 +3,8 @@ package factom_identity
 import (
 	"fmt"
 
+	"time"
+
 	"github.com/Emyrk/factom-raw"
 	"github.com/FactomProject/factomd/common/identity"
 	"github.com/FactomProject/factomd/common/interfaces"
@@ -37,6 +39,15 @@ func (c *Controller) FindIdentity(authorityChain interfaces.IHash) (*identity.Id
 	// ** Step 1 **
 	// First we need to determine if the identity is registered. We will have to parse the entire
 	// register chain (TODO: Optimize this)
+	regEntries, err := c.FetchChainEntriesInCreateOrder(IdentityRegisterChain)
+	if err != nil {
+		return nil, err
+	}
+
+	err = c.Parser.ParseEntryList(regEntries)
+	if err != nil {
+		return nil, err
+	}
 
 	// ** Step 2 **
 	// Parse the authority chain id, which will give us the management chain ID
@@ -86,6 +97,7 @@ type IdentityEntry struct {
 
 // FetchChainEntriesInCreateOrder will retrieve all entries in a chain in created order
 func (c *Controller) FetchChainEntriesInCreateOrder(chain interfaces.IHash) ([]IdentityEntry, error) {
+	now := time.Now()
 	head, err := c.Reader.FetchHeadIndexByChainID(chain)
 	if err != nil {
 		return nil, err
@@ -135,6 +147,8 @@ func (c *Controller) FetchChainEntriesInCreateOrder(chain interfaces.IHash) ([]I
 			entries = append(entries, IdentityEntry{entry, ts, height})
 		}
 	}
+
+	fmt.Println(time.Since(now).Seconds())
 
 	return entries, nil
 }

@@ -35,5 +35,6 @@ func main() {
 		return
 	}
 
-	fmt.Println(id)
+	j, _ := id.JSONString()
+	fmt.Println(j)
 }

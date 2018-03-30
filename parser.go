@@ -71,7 +71,8 @@ func (p *Parser) ParseEntry(entry interfaces.IEBEntry, dBlockHeight uint32, dBlo
 	// This is the entry's name. The ones detailed in the identity spec are covered above, we can support additional
 	// types here
 	switch string(extIDs[1]) {
-	case "TODO":
+	case "Register Factom Identity":
+		fmt.Println("s")
 	}
 
 	var _ = chainID
