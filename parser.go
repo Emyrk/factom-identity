@@ -3,6 +3,8 @@ package factom_identity
 import (
 	"fmt"
 
+	"github.com/FactomProject/factomd/common/adminBlock"
+	"github.com/FactomProject/factomd/common/constants"
 	"github.com/FactomProject/factomd/common/identity"
 	"github.com/FactomProject/factomd/common/interfaces"
 )
@@ -95,6 +97,19 @@ func (p *IdentityParser) ParseEntry(entry interfaces.IEBEntry, dBlockHeight uint
 	return nil
 }
 
-func (p *IdentityParser) ParseAdminBlockEntry(ab interfaces.IABEntry) {
-	p.IdentityManager.ProcessABlockEntry(ab, &FakeState{})
+// ParseAdminBlockEntry is a bit tricky. It's more coupled with factomd, so we need
+// to do a little more overhead to get this to work as intended. First, there is no state,
+// so this will NOT work if you have not also processed identity entries.
+//
+// Second we need to prevent the authority removal from removing the identity too, by catching it first.
+func (p *IdentityParser) ParseAdminBlockEntry(ab interfaces.IABEntry) error {
+	// Need to catch this one, as the regular function also removes the identity.
+	switch ab.Type() {
+	case constants.TYPE_REMOVE_FED_SERVER:
+		e := ab.(*adminBlock.RemoveFederatedServer)
+		p.RemoveAuthority(e.IdentityChainID)
+		return nil
+	}
+
+	return p.IdentityManager.ProcessABlockEntry(ab, &FakeState{})
 }
