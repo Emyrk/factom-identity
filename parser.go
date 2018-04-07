@@ -104,6 +104,7 @@ func (p *IdentityParser) ParseEntry(entry interfaces.IEBEntry, dBlockHeight uint
 // Second we need to prevent the authority removal from removing the identity too, by catching it first.
 func (p *IdentityParser) ParseAdminBlockEntry(ab interfaces.IABEntry) error {
 	// Need to catch this one, as the regular function also removes the identity.
+	// TODO: Need to correct status
 	switch ab.Type() {
 	case constants.TYPE_REMOVE_FED_SERVER:
 		e := ab.(*adminBlock.RemoveFederatedServer)
