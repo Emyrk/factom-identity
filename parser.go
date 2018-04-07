@@ -7,38 +7,53 @@ import (
 	"github.com/FactomProject/factomd/common/interfaces"
 )
 
-// Parser can parse identity related entries or admin blocks. It
-// can also be extended to allow for additional entry types (such as naming)
-type Parser struct {
-	*identity.IdentityManager
+type ExtendedIdentity struct {
+	IdentityCore identity.Identity `json:"id_core"`
+	Extension    IdentityExtension `json:"id_extension"`
 }
 
-func NewParser() *Parser {
-	p := new(Parser)
+// IdentityExtension is the unofficial identity fields
+type IdentityExtension struct {
+}
+
+// Parser can parse identity related entries or admin blocks. It
+// can also be extended to allow for additional entry types (such as naming)
+type IdentityParser struct {
+	*identity.IdentityManager
+	Extensions map[[32]byte]IdentityExtension
+}
+
+func NewIdentityParser() *IdentityParser {
+	p := new(IdentityParser)
 
 	p.IdentityManager = identity.NewIdentityManager()
 	return p
 }
 
-func (p *Parser) ParseEntryList(list []IdentityEntry) error {
+func (p *IdentityParser) GetExtendedIdentity(hash interfaces.IHash) *ExtendedIdentity {
+	id := p.IdentityManager.GetIdentity(hash)
+
+	if id == nil {
+		return nil
+	}
+
+	extension := p.Extensions[id.IdentityChainID.Fixed()]
+	return &ExtendedIdentity{*id, extension}
+}
+
+func (p *IdentityParser) ParseEntryList(list []IdentityEntry) error {
 	for _, e := range list {
-		err := p.ParseEntry(e.Entry, e.BlockHeight, e.Timestamp, true)
-		if err != nil {
-			return err
-		}
+		p.ParseEntry(e.Entry, e.BlockHeight, e.Timestamp, true)
 	}
 
 	// Parse the remaining
-	err := p.ProcessOldEntries()
-	if err != nil {
-		return err
-	}
+	p.ProcessOldEntries()
 	return nil
 }
 
 // ParseEntry is mostly handled by the IdentityManager, however it can be extended to support additional parsing options (such as naming)
-func (p *Parser) ParseEntry(entry interfaces.IEBEntry, dBlockHeight uint32, dBlockTimestamp interfaces.Timestamp, newEntry bool) error {
-	err := p.ProcessIdentityEntry(entry, dBlockHeight, dBlockTimestamp, newEntry)
+func (p *IdentityParser) ParseEntry(entry interfaces.IEBEntry, dBlockHeight uint32, dBlockTimestamp interfaces.Timestamp, newEntry bool) error {
+	_, err := p.ProcessIdentityEntry(entry, dBlockHeight, dBlockTimestamp, newEntry)
 	if err != nil {
 		return err
 	}
@@ -71,11 +86,15 @@ func (p *Parser) ParseEntry(entry interfaces.IEBEntry, dBlockHeight uint32, dBlo
 	// This is the entry's name. The ones detailed in the identity spec are covered above, we can support additional
 	// types here
 	switch string(extIDs[1]) {
-	case "Register Factom Identity":
-		fmt.Println("s")
+	case "Extended Option Here":
+
 	}
 
 	var _ = chainID
 
 	return nil
+}
+
+func (p *IdentityParser) ParseAdminBlockEntry(ab interfaces.IABEntry) {
+	p.IdentityManager.ProcessABlockEntry(ab, &FakeState{})
 }

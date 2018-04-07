@@ -1,5 +1,5 @@
-hash: 876f0121f4dddaa5e6274c50ba6ad5bbf3e9f07a45ff6ea4823c7ad604cb4ea5
-updated: 2018-03-30T13:47:05.508838384-05:00
+hash: a33e4cef5c4b3b6a9c4396157fbdf66d529d69e8e44f577c4705c8d78a08d684
+updated: 2018-04-07T12:32:17.534893752-05:00
 imports:
 - name: bitbucket.org/ww/goautoneg
   version: 75cd24fc2f2c2a2088577d12123ddee5f54e0675
@@ -31,7 +31,7 @@ imports:
 - name: github.com/FactomProject/factom
   version: d4b86d75081c311144799f6909e4d6046cd31f93
 - name: github.com/FactomProject/factomd
-  version: 1339b2b11cb1c7ff29a73acf8400f0d735fb258b
+  version: a4642672e23fadc5f6c12d1ab483809225f7d00c
   subpackages:
   - anchor
   - common/adminBlock
@@ -39,11 +39,15 @@ imports:
   - common/directoryBlock
   - common/directoryBlock/dbInfo
   - common/entryBlock
+  - common/entryBlock/specialEntries
   - common/entryCreditBlock
   - common/factoid
+  - common/globals
   - common/identity
   - common/identityEntries
   - common/interfaces
+  - common/messages
+  - common/messages/msgbase
   - common/primitives
   - common/primitives/random
   - database/blockExtractor
@@ -53,7 +57,12 @@ imports:
   - database/leveldb
   - database/mapdb
   - log
+  - p2p
+  - receipts
+  - state
   - util
+  - util/atomic
+  - wsapi
 - name: github.com/FactomProject/go-bip32
   version: 3b593af1c415abc1017648e4eb24a88c32fee0f3
 - name: github.com/FactomProject/go-bip39
@@ -77,10 +86,14 @@ imports:
   - leveldb/storage
   - leveldb/table
   - leveldb/util
+- name: github.com/FactomProject/logrustash
+  version: 9c7278ede46e1ccc03f0b17d6663730c340acb81
 - name: github.com/FactomProject/netki-go-partner-client
   version: 426acb535e66cc2f9e6226ae254555e3572fd142
 - name: github.com/FactomProject/snappy-go
   version: f2f83b22c29e5abc60e3a95062ce1491d3b95371
+- name: github.com/FactomProject/web
+  version: 7daee1bf727fc2cd9142b9a73a797f98b3180756
 - name: github.com/golang/protobuf
   version: c22ae3cf020a21ebb7ae566dccbe90fc8ea4f9ea
   subpackages:
@@ -109,6 +122,10 @@ imports:
   - pbkdf2
   - ripemd160
   - ssh/terminal
+- name: golang.org/x/net
+  version: d866cfc389cec985d6fda2859936a575a55a3ab6
+  subpackages:
+  - websocket
 - name: golang.org/x/sys
   version: 8dbc5d05d6edcc104950cc299a1ce6641235bc86
   subpackages:

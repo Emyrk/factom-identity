@@ -17,13 +17,13 @@ var IdentityRegisterChain, _ = primitives.HexToHash("888888001750ede0eff4b05f0c3
 // and feed entries into the parses to come up with the state of the identity.
 type Controller struct {
 	Reader factom_raw.Fetcher
-	Parser *Parser
+	Parser *IdentityParser
 }
 
 func NewAPIController(apiLocation string) *Controller {
 	f := new(Controller)
 	f.Reader = factom_raw.NewAPIReader(apiLocation)
-	f.Parser = NewParser()
+	f.Parser = NewIdentityParser()
 
 	return f
 }

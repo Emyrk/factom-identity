@@ -1,5 +1,7 @@
 package: github.com/Emyrk/factom-identity
 import:
+- package: github.com/FactomProject/logrustash
+- package: github.com/FactomProject/web
 - package: github.com/Emyrk/factom-raw
 - package: github.com/FactomProject/factomd
   version: communitynet-m3-id
