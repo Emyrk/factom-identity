@@ -3,10 +3,11 @@ package factom_identity
 import (
 	"fmt"
 
-	"time"
+	"encoding/hex"
 
 	"github.com/Emyrk/factom-raw"
 	"github.com/FactomProject/factomd/common/identity"
+	"github.com/FactomProject/factomd/common/identityEntries"
 	"github.com/FactomProject/factomd/common/interfaces"
 	"github.com/FactomProject/factomd/common/primitives"
 )
@@ -34,58 +35,109 @@ func (a *Controller) IsWorking() bool {
 	return err == nil
 }
 
-// FindIdentity can be given an authority chain ID and build the identity state.
-func (c *Controller) FindIdentity(authorityChain interfaces.IHash) (*identity.Identity, error) {
-	// ** Step 1 **
-	// First we need to determine if the identity is registered. We will have to parse the entire
-	// register chain (TODO: Optimize this)
+func (c *Controller) FindAllIdentities() (map[string]*identity.Identity, error) {
+	// Find all registered identities
+	ids, err := c.parseRegisterChain(true)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, chainID := range ids {
+		c.parseIdentityChain(chainID)
+	}
+
+	humanMap := make(map[string]*identity.Identity)
+	for k, v := range c.Parser.IdentityManager.Identities {
+		if v.IdentityChainID == nil || v.IdentityChainID.IsZero() {
+			continue
+		}
+		humanMap[hex.EncodeToString(k[:])] = v
+	}
+	return humanMap, nil
+}
+
+func (c *Controller) parseRegisterChain(getHashes bool) ([]interfaces.IHash, error) {
 	regEntries, err := c.FetchChainEntriesInCreateOrder(IdentityRegisterChain)
 	if err != nil {
 		return nil, err
+	}
+
+	var ids []interfaces.IHash
+	if getHashes {
+		for _, e := range regEntries {
+			rfi := new(identityEntries.RegisterFactomIdentityStructure)
+			err := rfi.DecodeFromExtIDs(e.Entry.ExternalIDs())
+			if err != nil {
+				continue
+			}
+
+			ids = append(ids, rfi.IdentityChainID)
+		}
 	}
 
 	err = c.Parser.ParseEntryList(regEntries)
 	if err != nil {
 		return nil, err
 	}
+	return ids, nil
+}
 
-	// ** Step 2 **
-	// Parse the authority chain id, which will give us the management chain ID
-	rootEntries, err := c.FetchChainEntriesInCreateOrder(authorityChain)
+// FindIdentity can be given an authority chain ID and build the identity state.
+func (c *Controller) FindIdentity(authorityChain interfaces.IHash) (*identity.Identity, error) {
+	// ** Step 1 **
+	// First we need to determine if the identity is registered. We will have to parse the entire
+	// register chain (TODO: Optimize this)
+	_, err := c.parseRegisterChain(false)
 	if err != nil {
 		return nil, err
 	}
 
-	err = c.Parser.ParseEntryList(rootEntries)
+	// ** Step 2 **
+	// Parse the authority chain id,
+	err = c.parseIdentityChain(authorityChain)
 	if err != nil {
 		return nil, err
 	}
 
 	// ** Step 3 **
+	// Return the correct identity
+	return c.Parser.GetIdentity(authorityChain), nil
+}
+
+func (c *Controller) parseIdentityChain(identityChainId interfaces.IHash) error {
+	// Parse the root
+	rootEntries, err := c.FetchChainEntriesInCreateOrder(identityChainId)
+	if err != nil {
+		return err
+	}
+
+	err = c.Parser.ParseEntryList(rootEntries)
+	if err != nil {
+		return err
+	}
+
 	// Parse the entries contained in the management chain (if exists!)
-	id := c.Parser.GetIdentity(authorityChain)
+	id := c.Parser.GetIdentity(identityChainId)
 	if id == nil {
-		return nil, fmt.Errorf("Identity was not found")
+		return fmt.Errorf("Identity was not found")
 	}
 
 	// The id stops here
 	if id.ManagementChainID.IsZero() {
-		return id, nil
+		return nil
 	}
 
 	manageEntries, err := c.FetchChainEntriesInCreateOrder(id.ManagementChainID)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	err = c.Parser.ParseEntryList(manageEntries)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	// ** Step 4 **
-	// Return the correct identity
-	return c.Parser.GetIdentity(authorityChain), nil
+	return nil
 }
 
 // IdentityEntry is parsable, as it contains all the needed info
@@ -97,7 +149,6 @@ type IdentityEntry struct {
 
 // FetchChainEntriesInCreateOrder will retrieve all entries in a chain in created order
 func (c *Controller) FetchChainEntriesInCreateOrder(chain interfaces.IHash) ([]IdentityEntry, error) {
-	now := time.Now()
 	head, err := c.Reader.FetchHeadIndexByChainID(chain)
 	if err != nil {
 		return nil, err
@@ -147,8 +198,6 @@ func (c *Controller) FetchChainEntriesInCreateOrder(chain interfaces.IHash) ([]I
 			entries = append(entries, IdentityEntry{entry, ts, height})
 		}
 	}
-
-	fmt.Println(time.Since(now).Seconds())
 
 	return entries, nil
 }

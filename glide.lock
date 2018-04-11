@@ -1,5 +1,5 @@
 hash: a33e4cef5c4b3b6a9c4396157fbdf66d529d69e8e44f577c4705c8d78a08d684
-updated: 2018-04-07T12:32:17.534893752-05:00
+updated: 2018-04-11T17:37:57.682024774-05:00
 imports:
 - name: bitbucket.org/ww/goautoneg
   version: 75cd24fc2f2c2a2088577d12123ddee5f54e0675
@@ -31,7 +31,7 @@ imports:
 - name: github.com/FactomProject/factom
   version: d4b86d75081c311144799f6909e4d6046cd31f93
 - name: github.com/FactomProject/factomd
-  version: a4642672e23fadc5f6c12d1ab483809225f7d00c
+  version: 3231ab8bd86cc45a896bfc536ae853faa5ad4f22
   subpackages:
   - anchor
   - common/adminBlock
