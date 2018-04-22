@@ -1,8 +1,8 @@
 hash: 028fdbe98f54913c50b921e91c2bdd3c61bd0d6e7a5fc0a97f00f318a0487055
-updated: 2018-04-21T21:39:23.016587471-05:00
+updated: 2018-04-21T21:50:39.865007303-05:00
 imports:
 - name: github.com/beorn7/perks
-  version: b965b613227fddccbfffe13eae360ed3fa822f8d
+  version: 4c0e84591b9aa9e6dcfdf3e020114cd81f89d5f9
   subpackages:
   - quantile
 - name: github.com/btcsuitereleases/btcutil
@@ -27,7 +27,7 @@ imports:
   subpackages:
   - edwards25519
 - name: github.com/FactomProject/factom
-  version: d4b86d75081c311144799f6909e4d6046cd31f93
+  version: cf230df541757ac86cd945a4a388c6c15914b726
 - name: github.com/FactomProject/factomd
   version: 96d2b5adcaf819218d66874dd891ff1f133d1097
   subpackages:
@@ -93,19 +93,19 @@ imports:
 - name: github.com/FactomProject/web
   version: 7daee1bf727fc2cd9142b9a73a797f98b3180756
 - name: github.com/golang/protobuf
-  version: c22ae3cf020a21ebb7ae566dccbe90fc8ea4f9ea
+  version: 130e6b02ab059e7b717a096f397c5b60111cae74
   subpackages:
   - proto
 - name: github.com/matttproud/golang_protobuf_extensions
-  version: fc2b8d3a73c4867e51861bbdd5ae3c1f0869dd6a
+  version: c12348ce28de40eed0136aa2b644d0ee0650e56c
   subpackages:
   - pbutil
 - name: github.com/prometheus/client_golang
-  version: c5b7fccd204277076155f10851dad72b76a49317
+  version: 5cec1d0429b02e4323e042eb04dafdb079ddf568
   subpackages:
   - prometheus
 - name: github.com/prometheus/client_model
-  version: fa8ad6fec33561be4280a8f0514318c79d7f6cb6
+  version: 6f3806018612930941127f2a7c6c453ba2c527d2
   subpackages:
   - go
 - name: github.com/prometheus/common
@@ -115,7 +115,9 @@ imports:
   - internal/bitbucket.org/ww/goautoneg
   - model
 - name: github.com/prometheus/procfs
-  version: 6c34ef819e19b4e16f410100ace4aa006f0e3bf8
+  version: a6e9df898b1336106c743392c48ee0b71f5c4efa
+  subpackages:
+  - xfs
 - name: github.com/sirupsen/logrus
   version: 89742aefa4b206dcf400792f3bd35b542998eb3b
 - name: golang.org/x/crypto
@@ -125,7 +127,7 @@ imports:
   - ripemd160
   - ssh/terminal
 - name: golang.org/x/net
-  version: d866cfc389cec985d6fda2859936a575a55a3ab6
+  version: 1087133bc4af3073e18add999345c6ae75918503
   subpackages:
   - websocket
 - name: golang.org/x/sys
