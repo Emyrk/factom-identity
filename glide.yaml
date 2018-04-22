@@ -4,7 +4,7 @@ import:
 - package: github.com/FactomProject/web
 - package: github.com/Emyrk/factom-raw
 - package: github.com/FactomProject/factomd
-  version: communitynet-m3-id
+  version: communitynet-m3-coinbase
   subpackages:
   - common/identity
   - common/interfaces
