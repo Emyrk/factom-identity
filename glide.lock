@@ -1,5 +1,5 @@
 hash: 028fdbe98f54913c50b921e91c2bdd3c61bd0d6e7a5fc0a97f00f318a0487055
-updated: 2018-04-21T21:50:39.865007303-05:00
+updated: 2018-04-21T21:56:44.42447896-05:00
 imports:
 - name: github.com/beorn7/perks
   version: 4c0e84591b9aa9e6dcfdf3e020114cd81f89d5f9
@@ -29,7 +29,7 @@ imports:
 - name: github.com/FactomProject/factom
   version: cf230df541757ac86cd945a4a388c6c15914b726
 - name: github.com/FactomProject/factomd
-  version: 96d2b5adcaf819218d66874dd891ff1f133d1097
+  version: 6f47df146a53cc25ef59205680070faf7e179e87
   subpackages:
   - anchor
   - common/adminBlock
