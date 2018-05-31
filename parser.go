@@ -16,6 +16,7 @@ type ExtendedIdentity struct {
 
 // IdentityExtension is the unofficial identity fields
 type IdentityExtension struct {
+	UserCoinbaseAddress string `json:"user_coinbase_address"`
 }
 
 // Parser can parse identity related entries or admin blocks. It
