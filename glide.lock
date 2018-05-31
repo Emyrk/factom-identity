@@ -1,8 +1,8 @@
-hash: 028fdbe98f54913c50b921e91c2bdd3c61bd0d6e7a5fc0a97f00f318a0487055
-updated: 2018-04-21T21:56:44.42447896-05:00
+hash: af674fa1323c3d7165fb42e9aad282ff2478501af9faa6b2a4e55e93333186be
+updated: 2018-05-31T14:00:55.460130429-04:00
 imports:
 - name: github.com/beorn7/perks
-  version: 4c0e84591b9aa9e6dcfdf3e020114cd81f89d5f9
+  version: b965b613227fddccbfffe13eae360ed3fa822f8d
   subpackages:
   - quantile
 - name: github.com/btcsuitereleases/btcutil
@@ -27,9 +27,9 @@ imports:
   subpackages:
   - edwards25519
 - name: github.com/FactomProject/factom
-  version: cf230df541757ac86cd945a4a388c6c15914b726
+  version: d4b86d75081c311144799f6909e4d6046cd31f93
 - name: github.com/FactomProject/factomd
-  version: 6f47df146a53cc25ef59205680070faf7e179e87
+  version: f77a6c8aa8e1f13ab54cb2c05ee9478c6f606649
   subpackages:
   - anchor
   - common/adminBlock
@@ -93,19 +93,19 @@ imports:
 - name: github.com/FactomProject/web
   version: 7daee1bf727fc2cd9142b9a73a797f98b3180756
 - name: github.com/golang/protobuf
-  version: 130e6b02ab059e7b717a096f397c5b60111cae74
+  version: c22ae3cf020a21ebb7ae566dccbe90fc8ea4f9ea
   subpackages:
   - proto
 - name: github.com/matttproud/golang_protobuf_extensions
-  version: c12348ce28de40eed0136aa2b644d0ee0650e56c
+  version: fc2b8d3a73c4867e51861bbdd5ae3c1f0869dd6a
   subpackages:
   - pbutil
 - name: github.com/prometheus/client_golang
-  version: 5cec1d0429b02e4323e042eb04dafdb079ddf568
+  version: c5b7fccd204277076155f10851dad72b76a49317
   subpackages:
   - prometheus
 - name: github.com/prometheus/client_model
-  version: 6f3806018612930941127f2a7c6c453ba2c527d2
+  version: fa8ad6fec33561be4280a8f0514318c79d7f6cb6
   subpackages:
   - go
 - name: github.com/prometheus/common
@@ -115,9 +115,7 @@ imports:
   - internal/bitbucket.org/ww/goautoneg
   - model
 - name: github.com/prometheus/procfs
-  version: a6e9df898b1336106c743392c48ee0b71f5c4efa
-  subpackages:
-  - xfs
+  version: 6c34ef819e19b4e16f410100ace4aa006f0e3bf8
 - name: github.com/sirupsen/logrus
   version: 89742aefa4b206dcf400792f3bd35b542998eb3b
 - name: golang.org/x/crypto
@@ -127,7 +125,7 @@ imports:
   - ripemd160
   - ssh/terminal
 - name: golang.org/x/net
-  version: 1087133bc4af3073e18add999345c6ae75918503
+  version: d866cfc389cec985d6fda2859936a575a55a3ab6
   subpackages:
   - websocket
 - name: golang.org/x/sys

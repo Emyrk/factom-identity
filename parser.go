@@ -71,9 +71,9 @@ func (p *IdentityParser) ParseEntry(entry interfaces.IEBEntry, dBlockHeight uint
 	if change {
 		// Set the chainid of the identity chain id.
 		id, ok := p.IdentityManager.Identities[entry.GetChainID().Fixed()]
-		if ok {
+		if ok && !id.ManagementChainID.IsZero() {
 			changed = entry.GetChainID()
-			p.ManagementChains[id.IdentityChainID.Fixed()] = id.ManagementChainID
+			p.ManagementChains[id.ManagementChainID.Fixed()] = id.IdentityChainID
 			return
 		}
 
@@ -82,6 +82,7 @@ func (p *IdentityParser) ParseEntry(entry interfaces.IEBEntry, dBlockHeight uint
 			changed = v
 			return
 		}
+		changed = entry.GetChainID()
 		return
 	}
 
