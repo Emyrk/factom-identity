@@ -132,13 +132,31 @@ func (p *IdentityParser) ParseEntry(entry interfaces.IEBEntry, dBlockHeight uint
 // so this will NOT work if you have not also processed identity entries.
 //
 // Second we need to prevent the authority removal from removing the identity too, by catching it first.
-func (p *IdentityParser) ParseAdminBlockEntry(ab interfaces.IABEntry) error {
+//
+//	Params:
+//		ab
+//		keep	boolean		true will keep the authority in the list and just change the status
+func (p *IdentityParser) ParseAdminBlockEntry(ab interfaces.IABEntry, keep bool) error {
 	// Need to catch this one, as the regular function also removes the identity.
-	// TODO: Need to correct status
 	switch ab.Type() {
 	case constants.TYPE_REMOVE_FED_SERVER:
 		e := ab.(*adminBlock.RemoveFederatedServer)
-		p.RemoveAuthority(e.IdentityChainID)
+		if !keep {
+			p.RemoveAuthority(e.IdentityChainID)
+		} else {
+			auth := p.IdentityManager.GetAuthority(e.IdentityChainID)
+			if auth == nil {
+				return fmt.Errorf("Authority %v not found", e.IdentityChainID.String())
+			}
+			auth.Status = constants.IDENTITY_UNASSIGNED
+			p.IdentityManager.SetAuthority(e.IdentityChainID, auth)
+
+			if id := p.IdentityManager.GetIdentity(e.IdentityChainID); id != nil {
+				id.Status = constants.IDENTITY_UNASSIGNED
+				p.IdentityManager.SetIdentity(id.IdentityChainID, id)
+			}
+		}
+
 		return nil
 	}
 
