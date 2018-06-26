@@ -9,16 +9,6 @@ import (
 	"github.com/FactomProject/factomd/common/interfaces"
 )
 
-type ExtendedIdentity struct {
-	IdentityCore identity.Identity `json:"id_core"`
-	Extension    IdentityExtension `json:"id_extension"`
-}
-
-// IdentityExtension is the unofficial identity fields
-type IdentityExtension struct {
-	UserCoinbaseAddress string `json:"user_coinbase_address"`
-}
-
 // Parser can parse identity related entries or admin blocks. It
 // can also be extended to allow for additional entry types (such as naming)
 type IdentityParser struct {
