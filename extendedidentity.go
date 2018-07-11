@@ -14,7 +14,6 @@ type ExtendedIdentity struct {
 // IdentityExtension is the unofficial identity fields
 type IdentityExtension struct {
 	UserCoinbaseAddress string `json:"user_coinbase_address"`
-	Name                string `json:"name"`
 }
 
 func (i *ExtendedIdentity) PopulateExtension() {
@@ -30,7 +29,6 @@ type ExtendedAuthority struct {
 type AuthorityExtension struct {
 	UserCoinbaseAddress string `json:"user_coinbase_address"`
 	HumanStatus         string `json:"readable_status"`
-	Name                string `json:"name"`
 }
 
 func (a *ExtendedAuthority) PopulateExtension() {
