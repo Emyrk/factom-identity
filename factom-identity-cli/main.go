@@ -12,6 +12,10 @@ import (
 	"github.com/Emyrk/factom-identity"
 	"github.com/FactomProject/factomd/common/identity"
 	"github.com/FactomProject/factomd/common/primitives"
+
+	"strings"
+	log "github.com/sirupsen/logrus"
+	"io/ioutil"
 )
 
 func main() {
@@ -20,9 +24,24 @@ func main() {
 		rootHex = flag.String("id", "", "Root Chain ID starting with '888888...'")
 		factomd = flag.String("s", "localhost:8088", "Factomd api location")
 		pretty  = flag.Bool("p", false, "Make the printout pretty for us mere humans")
+		loglvl = flag.String("l", "none", "Set log level to 'debug', 'info', 'warn', 'error', or 'none'")
 	)
 
 	flag.Parse()
+
+	switch strings.ToLower(*loglvl) {
+	case "warn", "warning":
+		log.SetLevel(log.WarnLevel)
+	case "debug":
+		log.SetLevel(log.DebugLevel)
+	case "info":
+		log.SetLevel(log.InfoLevel)
+	case "error":
+		log.SetLevel(log.ErrorLevel)
+	case "none":
+		log.SetLevel(log.FatalLevel)
+		log.SetOutput(ioutil.Discard)
+	}
 
 	var data []byte
 	c := factom_identity.NewAPIController(*factomd)

@@ -7,7 +7,11 @@ import (
 	"github.com/FactomProject/factomd/common/constants"
 	"github.com/FactomProject/factomd/common/identity"
 	"github.com/FactomProject/factomd/common/interfaces"
+
+	log "github.com/sirupsen/logrus"
 )
+
+var parseLogger = log.WithFields(log.Fields{"struct":"parser"})
 
 // Parser can parse identity related entries or admin blocks. It
 // can also be extended to allow for additional entry types (such as naming)
@@ -39,7 +43,10 @@ func (p *IdentityParser) GetExtendedIdentity(hash interfaces.IHash) *ExtendedIde
 
 func (p *IdentityParser) ParseEntryList(list []IdentityEntry) error {
 	for _, e := range list {
-		p.ParseEntry(e.Entry, e.BlockHeight, e.Timestamp, true)
+		_, err := p.ParseEntry(e.Entry, e.BlockHeight, e.Timestamp, true)
+		if err != nil {
+			parseLogger.WithFields(log.Fields{"func":"ParseEntryList","chain":e.Entry.GetChainID().String(), "entryhash":e.Entry.GetHash().String()}).Errorf("Error: %s", err.Error())
+		}
 	}
 
 	// Parse the remaining
